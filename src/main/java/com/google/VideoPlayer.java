@@ -56,7 +56,12 @@ public class VideoPlayer {
   }
 
   public void stopVideo() {
-    System.out.println("stopVideo needs implementation");
+    if (current_playing_video != null) {
+      System.out.println("Stopping video: " + current_playing_video.getTitle());
+    } else {
+      System.out.println("Cannot stop video: No video is currently playing");
+    }
+    current_playing_video = null;
   }
 
   public void playRandomVideo() {
