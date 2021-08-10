@@ -5,10 +5,12 @@ import java.util.List;
 
 public class VideoPlayer {
 
+  private Video current_playing_video;
   private final VideoLibrary videoLibrary;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
+    this.current_playing_video = null;
   }
 
   public void numberOfVideos() {
@@ -39,7 +41,18 @@ public class VideoPlayer {
   }
 
   public void playVideo(String videoId) {
-    System.out.println("playVideo needs implementation");
+    Video video = videoLibrary.getVideo(videoId);
+    if (video == null) {
+      System.out.println("Cannot play video: Video does not exist");
+      return;
+    }
+
+    if (current_playing_video != null) {
+      System.out.println("Stopping video: " + current_playing_video.getTitle());
+    }
+    System.out.println("Playing video: " + video.getTitle());
+    current_playing_video = video;
+
   }
 
   public void stopVideo() {
