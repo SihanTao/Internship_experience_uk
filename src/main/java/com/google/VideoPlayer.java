@@ -98,11 +98,48 @@ public class VideoPlayer {
   }
 
   public void continueVideo() {
-    System.out.println("continueVideo needs implementation");
+    if (current_playing_video == null) {
+      System.out.println("Cannot continue video: No video is currently playing");
+      return;
+    }
+
+    if (!is_current_playing_video_paused) {
+      System.out.println("Cannot continue video: Video is not paused");
+    } else {
+      System.out.println("Continuing video: " + current_playing_video.getTitle());
+      is_current_playing_video_paused = false;
+    }
   }
 
   public void showPlaying() {
-    System.out.println("showPlaying needs implementation");
+    if (current_playing_video == null) {
+      System.out.println("No video is currently playing");
+      return;
+    }
+
+    System.out.print("Currently playing: " + current_playing_video.getTitle()+" ("+
+        current_playing_video.getVideoId()+") [");
+
+    List<String> tags = current_playing_video.getTags();
+
+    if (tags.size() == 0) {
+      System.out.print("]");
+    }
+
+    for (int i = 0; i < tags.size(); i++) {
+      System.out.print(tags.get(i));
+      if (i == tags.size() - 1) {
+        System.out.print("]");
+      } else {
+        System.out.print(" ");
+      }
+    }
+
+    if (is_current_playing_video_paused) {
+      System.out.print(" - PAUSED\n");
+    } else {
+      System.out.println();
+    }
   }
 
   public void createPlaylist(String playlistName) {
