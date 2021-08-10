@@ -1,5 +1,8 @@
 package com.google;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class VideoPlayer {
 
   private final VideoLibrary videoLibrary;
@@ -13,7 +16,26 @@ public class VideoPlayer {
   }
 
   public void showAllVideos() {
-    System.out.println("showAllVideos needs implementation");
+    System.out.println("Here's a list of all available videos:");
+    List<Video> videos = videoLibrary.getVideos();
+    videos.sort(Comparator.comparing(Video::getTitle));
+    for (Video video : videos) {
+      System.out.print("\t"+video.getTitle()+" ("+video.getVideoId()+") [");
+      List<String> tags = video.getTags();
+
+      if (tags.size() == 0) {
+        System.out.println("]");
+      }
+
+      for (int i = 0; i < tags.size(); i++) {
+        System.out.print(tags.get(i));
+        if (i == tags.size() - 1) {
+          System.out.println("]");
+        } else {
+          System.out.print(" ");
+        }
+      }
+    }
   }
 
   public void playVideo(String videoId) {
