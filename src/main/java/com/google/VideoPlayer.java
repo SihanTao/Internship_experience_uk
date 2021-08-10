@@ -197,6 +197,7 @@ public class VideoPlayer {
     }
 
     System.out.println("Showing all playlists:");
+    playlistNames.sort(null);
     for (String name : playlistNames) {
       System.out.println("\t" + name);
     }
