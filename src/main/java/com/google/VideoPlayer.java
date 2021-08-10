@@ -9,11 +9,11 @@ import java.util.Set;
 
 public class VideoPlayer {
 
-  private Video current_playing_video;
-  private boolean is_current_playing_video_paused = false;
   private final VideoLibrary videoLibrary;
   private final HashMap<String, VideoPlaylist> playlistHashMap;
   private final List<String> playlistNames;
+  private Video current_playing_video;
+  private boolean is_current_playing_video_paused = false;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
@@ -28,7 +28,7 @@ public class VideoPlayer {
 
   private String formattedVideoInfo(Video video) {
     StringBuilder sb = new StringBuilder();
-    sb.append(video.getTitle()+" ("+video.getVideoId()+") [");
+    sb.append(video.getTitle() + " (" + video.getVideoId() + ") [");
 
     List<String> tags = video.getTags();
     if (tags.size() == 0) {
@@ -52,7 +52,7 @@ public class VideoPlayer {
     List<Video> videos = videoLibrary.getVideos();
     videos.sort(Comparator.comparing(Video::getTitle));
     for (Video video : videos) {
-      System.out.println("\t"+formattedVideoInfo(video));
+      System.out.println("\t" + formattedVideoInfo(video));
     }
   }
 
@@ -69,7 +69,6 @@ public class VideoPlayer {
     System.out.println("Playing video: " + video.getTitle());
     current_playing_video = video;
     is_current_playing_video_paused = false;
-
   }
 
   public void stopVideo() {
@@ -140,7 +139,6 @@ public class VideoPlayer {
     }
   }
 
-
   // Part 2 : playlist management
   public void createPlaylist(String playlistName) {
     Set<String> playlistsNameSet = playlistHashMap.keySet();
@@ -160,12 +158,12 @@ public class VideoPlayer {
     Set<String> playlistsNameSet = playlistHashMap.keySet();
     String uppercase_playlistName = playlistName.toUpperCase();
     if (!playlistsNameSet.contains(uppercase_playlistName)) {
-      System.out.println("Cannot add video to " + playlistName +": Playlist does not exist");
+      System.out.println("Cannot add video to " + playlistName + ": Playlist does not exist");
       return;
     }
 
     if (videoLibrary.getVideo(videoId) == null) {
-      System.out.println("Cannot add video to " + playlistName +": Video does not exist");
+      System.out.println("Cannot add video to " + playlistName + ": Video does not exist");
       return;
     }
 
@@ -195,7 +193,23 @@ public class VideoPlayer {
   }
 
   public void showPlaylist(String playlistName) {
-    System.out.println("showPlaylist needs implementation");
+    Set<String> playlistNameSet = playlistHashMap.keySet();
+    if (!playlistNameSet.contains(playlistName.toUpperCase())) {
+      System.out.println("Cannot show playlist " + playlistName + ": Playlist does not exist");
+      return;
+    }
+
+    System.out.println("Showing playlist: " + playlistName);
+    VideoPlaylist videoPlaylist = playlistHashMap.get(playlistName.toUpperCase());
+    if (videoPlaylist.getVideoIdList().isEmpty()) {
+      System.out.println("\tNo videos here yet");
+      return;
+    }
+
+    for (String name : videoPlaylist.getVideoIdList()) {
+      Video video = videoLibrary.getVideo(name);
+      System.out.println("\t" + formattedVideoInfo(video));
+    }
   }
 
   public void removeFromPlaylist(String playlistName, String videoId) {
