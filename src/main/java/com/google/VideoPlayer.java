@@ -26,26 +26,33 @@ public class VideoPlayer {
     System.out.printf("%s videos in the library%n", videoLibrary.getVideos().size());
   }
 
+  private String formattedVideoInfo(Video video) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(video.getTitle()+" ("+video.getVideoId()+") [");
+
+    List<String> tags = video.getTags();
+    if (tags.size() == 0) {
+      sb.append("]");
+      return sb.toString();
+    }
+
+    for (int i = 0; i < tags.size(); i++) {
+      sb.append(tags.get(i));
+      if (i == tags.size() - 1) {
+        sb.append("]");
+      } else {
+        sb.append(" ");
+      }
+    }
+    return sb.toString();
+  }
+
   public void showAllVideos() {
     System.out.println("Here's a list of all available videos:");
     List<Video> videos = videoLibrary.getVideos();
     videos.sort(Comparator.comparing(Video::getTitle));
     for (Video video : videos) {
-      System.out.print("\t"+video.getTitle()+" ("+video.getVideoId()+") [");
-      List<String> tags = video.getTags();
-
-      if (tags.size() == 0) {
-        System.out.println("]");
-      }
-
-      for (int i = 0; i < tags.size(); i++) {
-        System.out.print(tags.get(i));
-        if (i == tags.size() - 1) {
-          System.out.println("]");
-        } else {
-          System.out.print(" ");
-        }
-      }
+      System.out.println("\t"+formattedVideoInfo(video));
     }
   }
 
@@ -124,26 +131,10 @@ public class VideoPlayer {
       return;
     }
 
-    System.out.print("Currently playing: " + current_playing_video.getTitle()+" ("+
-        current_playing_video.getVideoId()+") [");
-
-    List<String> tags = current_playing_video.getTags();
-
-    if (tags.size() == 0) {
-      System.out.print("]");
-    }
-
-    for (int i = 0; i < tags.size(); i++) {
-      System.out.print(tags.get(i));
-      if (i == tags.size() - 1) {
-        System.out.print("]");
-      } else {
-        System.out.print(" ");
-      }
-    }
+    System.out.print("Currently playing: " + formattedVideoInfo(current_playing_video));
 
     if (is_current_playing_video_paused) {
-      System.out.print(" - PAUSED\n");
+      System.out.println(" - PAUSED");
     } else {
       System.out.println();
     }
