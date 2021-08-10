@@ -7,6 +7,7 @@ import java.util.Random;
 public class VideoPlayer {
 
   private Video current_playing_video;
+  private boolean is_current_playing_video_paused = false;
   private final VideoLibrary videoLibrary;
 
   public VideoPlayer() {
@@ -53,6 +54,7 @@ public class VideoPlayer {
     }
     System.out.println("Playing video: " + video.getTitle());
     current_playing_video = video;
+    is_current_playing_video_paused = false;
 
   }
 
@@ -63,6 +65,7 @@ public class VideoPlayer {
       System.out.println("Cannot stop video: No video is currently playing");
     }
     current_playing_video = null;
+    is_current_playing_video_paused = false;
   }
 
   public void playRandomVideo() {
@@ -77,10 +80,21 @@ public class VideoPlayer {
     }
     System.out.println("Playing video: " + next_video.getTitle());
     current_playing_video = next_video;
+    is_current_playing_video_paused = false;
   }
 
   public void pauseVideo() {
-    System.out.println("pauseVideo needs implementation");
+    if (current_playing_video == null) {
+      System.out.println("Cannot pause video: No video is currently playing");
+      return;
+    }
+
+    if (!is_current_playing_video_paused) {
+      is_current_playing_video_paused = true;
+      System.out.println("Pausing video: " + current_playing_video.getTitle());
+    } else {
+      System.out.println("Video already paused: " + current_playing_video.getTitle());
+    }
   }
 
   public void continueVideo() {
