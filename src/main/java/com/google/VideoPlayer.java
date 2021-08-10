@@ -142,6 +142,8 @@ public class VideoPlayer {
     }
   }
 
+
+  // Part 2 : playlist management
   public void createPlaylist(String playlistName) {
     System.out.println("createPlaylist needs implementation");
   }
