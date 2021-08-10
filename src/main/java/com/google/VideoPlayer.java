@@ -248,7 +248,14 @@ public class VideoPlayer {
   }
 
   public void deletePlaylist(String playlistName) {
-    System.out.println("deletePlaylist needs implementation");
+    if (!playlistHashMap.containsKey(playlistName.toUpperCase())) {
+      System.out.println("Cannot delete playlist " + playlistName + ": Playlist does not exist");
+      return;
+    }
+
+    playlistNames.remove(playlistName);
+    playlistHashMap.remove(playlistName.toUpperCase());
+    System.out.println("Deleted playlist: " + playlistName);
   }
 
   public void searchVideos(String searchTerm) {
