@@ -3,7 +3,6 @@ package com.google;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -14,11 +13,13 @@ public class VideoPlayer {
   private boolean is_current_playing_video_paused = false;
   private final VideoLibrary videoLibrary;
   private final HashMap<String, VideoPlaylist> playlistHashMap;
+  private final List<String> playlistNames;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
     this.current_playing_video = null;
     this.playlistHashMap = new HashMap<>();
+    this.playlistNames = new ArrayList<>();
   }
 
   public void numberOfVideos() {
@@ -151,22 +152,23 @@ public class VideoPlayer {
 
   // Part 2 : playlist management
   public void createPlaylist(String playlistName) {
-    Set<String> playlistsNames = playlistHashMap.keySet();
+    Set<String> playlistsNameSet = playlistHashMap.keySet();
 
-    if (playlistsNames.contains(playlistName.toUpperCase())) {
+    if (playlistsNameSet.contains(playlistName.toUpperCase())) {
       System.out.println("Cannot create playlist: A playlist with the same name already exists\n");
       return;
     }
 
     VideoPlaylist videoPlaylist = new VideoPlaylist(playlistName);
     playlistHashMap.put(playlistName.toUpperCase(), videoPlaylist);
+    playlistNames.add(playlistName);
     System.out.println("Successfully created new playlist: " + playlistName);
   }
 
   public void addVideoToPlaylist(String playlistName, String videoId) {
-    Set<String> playlistsNames = playlistHashMap.keySet();
+    Set<String> playlistsNameSet = playlistHashMap.keySet();
     String uppercase_playlistName = playlistName.toUpperCase();
-    if (!playlistsNames.contains(uppercase_playlistName)) {
+    if (!playlistsNameSet.contains(uppercase_playlistName)) {
       System.out.println("Cannot add video to " + playlistName +": Playlist does not exist");
       return;
     }
@@ -189,7 +191,15 @@ public class VideoPlayer {
   }
 
   public void showAllPlaylists() {
-    System.out.println("showAllPlaylists needs implementation");
+    if (playlistNames.isEmpty()) {
+      System.out.println("No playlists exist yet");
+      return;
+    }
+
+    System.out.println("Showing all playlists:");
+    for (String name : playlistNames) {
+      System.out.println("\t" + name);
+    }
   }
 
   public void showPlaylist(String playlistName) {
