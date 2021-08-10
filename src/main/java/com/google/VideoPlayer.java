@@ -1,5 +1,6 @@
 package com.google;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -9,10 +10,14 @@ public class VideoPlayer {
   private Video current_playing_video;
   private boolean is_current_playing_video_paused = false;
   private final VideoLibrary videoLibrary;
+  private final List<VideoPlaylist> videoPlaylists;
+  private final List<String> playlistsNames;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
     this.current_playing_video = null;
+    this.videoPlaylists = new ArrayList<>();
+    this.playlistsNames = new ArrayList<>();
   }
 
   public void numberOfVideos() {
@@ -145,7 +150,15 @@ public class VideoPlayer {
 
   // Part 2 : playlist management
   public void createPlaylist(String playlistName) {
-    System.out.println("createPlaylist needs implementation");
+    if (playlistsNames.contains(playlistName.toUpperCase())) {
+      System.out.println("Cannot create playlist: A playlist with the same name already exists\n");
+      return;
+    }
+
+    VideoPlaylist videoPlaylist = new VideoPlaylist(playlistName);
+    videoPlaylists.add(videoPlaylist);
+    playlistsNames.add(videoPlaylist.getPlaylistName().toUpperCase());
+    System.out.println("Successfully created new playlist: " + playlistName);
   }
 
   public void addVideoToPlaylist(String playlistName, String videoId) {
