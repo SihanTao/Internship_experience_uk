@@ -2,6 +2,7 @@ package com.google;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public class VideoPlayer {
 
@@ -65,7 +66,17 @@ public class VideoPlayer {
   }
 
   public void playRandomVideo() {
-    System.out.println("playRandomVideo needs implementation");
+    Random random = new Random();
+    List<Video> videos = videoLibrary.getVideos();
+    int size = videos.size();
+    int r = random.nextInt(size);
+
+    Video next_video = videos.get(r);
+    if (current_playing_video != null) {
+      System.out.println("Stopping video: " + current_playing_video.getTitle());
+    }
+    System.out.println("Playing video: " + next_video.getTitle());
+    current_playing_video = next_video;
   }
 
   public void pauseVideo() {
