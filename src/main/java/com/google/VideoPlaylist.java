@@ -33,4 +33,8 @@ class VideoPlaylist {
   public void remove_from_videoIdList(String videoId) {
     this.videoIdList.remove(videoId);
   }
+
+  public void clear_playlist() {
+    videoIdList.clear();
+  }
 }

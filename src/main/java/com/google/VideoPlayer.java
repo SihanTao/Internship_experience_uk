@@ -236,7 +236,15 @@ public class VideoPlayer {
   }
 
   public void clearPlaylist(String playlistName) {
-    System.out.println("clearPlaylist needs implementation");
+    if (!playlistHashMap.containsKey(playlistName.toUpperCase())) {
+      System.out.println("Cannot clear playlist " + playlistName + ": Playlist does not exist");
+      return;
+    }
+
+    VideoPlaylist videoPlaylist = playlistHashMap.get(playlistName.toUpperCase());
+    videoPlaylist.clear_playlist();
+    playlistHashMap.put(playlistName.toUpperCase(), videoPlaylist);
+    System.out.println("Successfully removed all videos from " + playlistName);
   }
 
   public void deletePlaylist(String playlistName) {
