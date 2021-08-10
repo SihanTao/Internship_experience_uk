@@ -165,7 +165,8 @@ public class VideoPlayer {
 
   public void addVideoToPlaylist(String playlistName, String videoId) {
     Set<String> playlistsNames = playlistHashMap.keySet();
-    if (!playlistsNames.contains(playlistName.toUpperCase())) {
+    String uppercase_playlistName = playlistName.toUpperCase();
+    if (!playlistsNames.contains(uppercase_playlistName)) {
       System.out.println("Cannot add video to " + playlistName +": Playlist does not exist");
       return;
     }
@@ -175,16 +176,16 @@ public class VideoPlayer {
       return;
     }
 
-    VideoPlaylist videoPlaylist = playlistHashMap.get(playlistName.toUpperCase());
+    VideoPlaylist videoPlaylist = playlistHashMap.get(uppercase_playlistName);
     if (videoPlaylist.getVideoIdList().contains(videoId)) {
       System.out.println("Cannot add video to " + playlistName + ": Video already added\n");
       return;
     }
 
+    String video_title = videoLibrary.getVideo(videoId).getTitle();
     videoPlaylist.add_to_videoIdList(videoId);
     playlistHashMap.put(playlistName, videoPlaylist);
-    System.out.println("Added video to " + playlistName + ": "
-        + videoLibrary.getVideo(videoId).getTitle());
+    System.out.println("Added video to " + playlistName + ": " + video_title);
   }
 
   public void showAllPlaylists() {
