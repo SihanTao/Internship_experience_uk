@@ -7,11 +7,11 @@ import java.util.List;
 class VideoPlaylist {
 
   private final String name;
-  private final List<String> videoidList;
+  private final List<String> videoIdList;
 
   public VideoPlaylist(String name) {
     this.name = name;
-    this.videoidList = new ArrayList<>();
+    this.videoIdList = new ArrayList<>();
   }
 
   public String getPlaylistName() {
@@ -23,6 +23,10 @@ class VideoPlaylist {
    * @param videoId : the unique id for the video to add
    */
   public void add_to_videoIdList(String videoId) {
-    this.videoidList.add(videoId);
+    this.videoIdList.add(videoId);
+  }
+
+  public List<String> getVideoIdList() {
+    return videoIdList;
   }
 }

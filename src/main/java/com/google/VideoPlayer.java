@@ -2,22 +2,23 @@ package com.google;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class VideoPlayer {
 
   private Video current_playing_video;
   private boolean is_current_playing_video_paused = false;
   private final VideoLibrary videoLibrary;
-  private final List<VideoPlaylist> videoPlaylists;
-  private final List<String> playlistsNames;
+  private final HashMap<String, VideoPlaylist> playlistHashMap;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
     this.current_playing_video = null;
-    this.videoPlaylists = new ArrayList<>();
-    this.playlistsNames = new ArrayList<>();
+    this.playlistHashMap = new HashMap<>();
   }
 
   public void numberOfVideos() {
@@ -150,19 +151,44 @@ public class VideoPlayer {
 
   // Part 2 : playlist management
   public void createPlaylist(String playlistName) {
-    if (playlistsNames.contains(playlistName.toUpperCase())) {
+    Set<String> playlistsNames = playlistHashMap.keySet();
+
+    Set<String> uppercase_names = new HashSet<>();
+    for (String name : playlistsNames) {
+      uppercase_names.add(name.toUpperCase());
+    }
+    if (uppercase_names.contains(playlistName.toUpperCase())) {
       System.out.println("Cannot create playlist: A playlist with the same name already exists\n");
       return;
     }
 
     VideoPlaylist videoPlaylist = new VideoPlaylist(playlistName);
-    videoPlaylists.add(videoPlaylist);
-    playlistsNames.add(videoPlaylist.getPlaylistName().toUpperCase());
+    playlistHashMap.put(playlistName, videoPlaylist);
     System.out.println("Successfully created new playlist: " + playlistName);
   }
 
   public void addVideoToPlaylist(String playlistName, String videoId) {
-    System.out.println("addVideoToPlaylist needs implementation");
+    Set<String> playlistsNames = playlistHashMap.keySet();
+    if (!playlistsNames.contains(playlistName)) {
+      System.out.println("Cannot add video to " + playlistName +": Playlist does not exist");
+      return;
+    }
+
+    if (videoLibrary.getVideo(videoId) == null) {
+      System.out.println("Cannot add video to " + playlistName +": Video does not exist");
+      return;
+    }
+
+    VideoPlaylist videoPlaylist = playlistHashMap.get(playlistName);
+    if (videoPlaylist.getVideoIdList().contains(videoId)) {
+      System.out.println("Cannot add video to " + videoLibrary.getVideo(videoId)
+          + ": Video already added\n");
+      return;
+    }
+
+    videoPlaylist.add_to_videoIdList(videoId);
+    playlistHashMap.put(playlistName, videoPlaylist);
+    System.out.println("Added video to " + playlistName + ": " + videoLibrary.getVideo(videoId));
   }
 
   public void showAllPlaylists() {
