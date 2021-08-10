@@ -153,17 +153,13 @@ public class VideoPlayer {
   public void createPlaylist(String playlistName) {
     Set<String> playlistsNames = playlistHashMap.keySet();
 
-    Set<String> uppercase_names = new HashSet<>();
-    for (String name : playlistsNames) {
-      uppercase_names.add(name.toUpperCase());
-    }
-    if (uppercase_names.contains(playlistName.toUpperCase())) {
+    if (playlistsNames.contains(playlistName.toUpperCase())) {
       System.out.println("Cannot create playlist: A playlist with the same name already exists\n");
       return;
     }
 
     VideoPlaylist videoPlaylist = new VideoPlaylist(playlistName);
-    playlistHashMap.put(playlistName, videoPlaylist);
+    playlistHashMap.put(playlistName.toUpperCase(), videoPlaylist);
     System.out.println("Successfully created new playlist: " + playlistName);
   }
 
