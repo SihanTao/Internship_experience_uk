@@ -29,4 +29,8 @@ class VideoPlaylist {
   public List<String> getVideoIdList() {
     return videoIdList;
   }
+
+  public void remove_from_videoIdList(String videoId) {
+    this.videoIdList.remove(videoId);
+  }
 }
