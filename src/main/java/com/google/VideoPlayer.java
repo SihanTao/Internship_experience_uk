@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 public class VideoPlayer {
@@ -259,7 +260,46 @@ public class VideoPlayer {
   }
 
   public void searchVideos(String searchTerm) {
-    System.out.println("searchVideos needs implementation");
+    List<Video> results = new ArrayList<>();
+    for (Video video : videoLibrary.getVideos()) {
+      if (video.getTitle().toUpperCase().contains(searchTerm.toUpperCase())) {
+        results.add(video);
+      }
+    }
+
+    results.sort(Comparator.comparing(Video::getTitle));
+    printSearchResult(results, searchTerm);
+
+    if (results.isEmpty()) {
+      return;
+    }
+
+    Scanner scanner = new Scanner(System.in);
+    String input = scanner.nextLine();
+
+    try {
+      int input_num = Integer.parseInt(input);
+      Video video = results.get(input_num - 1);
+      playVideo(video.getVideoId());
+    } catch (Exception e) {
+    }
+  }
+
+  private void printSearchResult(List<Video> results, String searchTerm) {
+    if (results.isEmpty()) {
+      System.out.println("No search results for " + searchTerm);
+      return;
+    }
+
+    System.out.println("Here are the results for " + searchTerm + ":");
+    for (int i = 0; i < results.size(); i++) {
+      System.out.println("\t" + (i + 1) + ") "
+          + formattedVideoInfo(results.get(i)));
+    }
+    System.out.println("Would you like to play any of the above?"
+        + " If yes, specify the number of the video.");
+    System.out.println("If your answer is not a valid number, "
+        + "we will assume it's a no.");
   }
 
   public void searchVideosWithTag(String videoTag) {
