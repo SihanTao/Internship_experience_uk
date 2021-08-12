@@ -269,7 +269,42 @@ public class VideoPlayer {
 
     results.sort(Comparator.comparing(Video::getTitle));
     printSearchResult(results, searchTerm);
+    playVideoInSearch(results, searchTerm);
+  }
 
+  private void printSearchResult(List<Video> results, String searchTerm) {
+    if (results.isEmpty()) {
+      System.out.println("No search results for " + searchTerm);
+      return;
+    }
+
+    System.out.println("Here are the results for " + searchTerm + ":");
+    for (int i = 0; i < results.size(); i++) {
+      System.out.println("\t" + (i + 1) + ") " + formattedVideoInfo(results.get(i)));
+    }
+    System.out.println(
+        "Would you like to play any of the above?" + " If yes, specify the number of the video.");
+    System.out.println("If your answer is not a valid number, " + "we will assume it's a no.");
+  }
+
+  public void searchVideosWithTag(String videoTag) {
+    List<Video> results = new ArrayList<>();
+
+    for (Video video : videoLibrary.getVideos()) {
+      List<String> tags = video.getTags();
+      for (String tag : tags) {
+        if (videoTag.equalsIgnoreCase(tag)) {
+          results.add(video);
+        }
+      }
+    }
+
+    results.sort(Comparator.comparing(Video::getTitle));
+    printSearchResult(results, videoTag);
+    playVideoInSearch(results, videoTag);
+  }
+
+  private void playVideoInSearch(List<Video> results, String searchTerm) {
     if (results.isEmpty()) {
       return;
     }
@@ -281,29 +316,8 @@ public class VideoPlayer {
       int input_num = Integer.parseInt(input);
       Video video = results.get(input_num - 1);
       playVideo(video.getVideoId());
-    } catch (Exception e) {
+    } catch (Exception ignored) {
     }
-  }
-
-  private void printSearchResult(List<Video> results, String searchTerm) {
-    if (results.isEmpty()) {
-      System.out.println("No search results for " + searchTerm);
-      return;
-    }
-
-    System.out.println("Here are the results for " + searchTerm + ":");
-    for (int i = 0; i < results.size(); i++) {
-      System.out.println("\t" + (i + 1) + ") "
-          + formattedVideoInfo(results.get(i)));
-    }
-    System.out.println("Would you like to play any of the above?"
-        + " If yes, specify the number of the video.");
-    System.out.println("If your answer is not a valid number, "
-        + "we will assume it's a no.");
-  }
-
-  public void searchVideosWithTag(String videoTag) {
-    System.out.println("searchVideosWithTag needs implementation");
   }
 
   public void flagVideo(String videoId) {
